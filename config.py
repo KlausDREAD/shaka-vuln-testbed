@@ -1,8 +1,15 @@
-"""Database/cloud credentials -- intentionally hardcoded for the Shaka test
-range. These are fake and were never real; kept in git history on purpose
-to demonstrate --trufflehog finding what a tree-only secret scan misses.
+"""Database/cloud credentials -- read from the environment, not hardcoded.
+
+History note (intentional, for the Shaka test range): an earlier commit on
+this branch hardcoded these same credentials directly in this file. They
+were fake and never real, but were never rotated when this fix landed --
+demonstrating exactly why a tree-only secret scan (trivy via --repo/--source)
+gives a false sense of safety here, and why --trufflehog (full git-history
+scan) exists.
 """
 
-AWS_ACCESS_KEY_ID = "AKIAABCDEFGHIJKLMNOP"
-AWS_SECRET_ACCESS_KEY = "aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890ABCD"
-GITHUB_TOKEN = "ghp_a1B2c3D4e5F6g7H8i9J0k1L2m3N4o5P6q7R8"
+import os
+
+AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
+AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
+GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
